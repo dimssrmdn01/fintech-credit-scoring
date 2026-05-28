@@ -8,8 +8,11 @@
 An end-to-end Machine Learning pipeline designed to assess credit risk and predict loan defaults. This project tackles real-world banking challenges, specifically handling highly imbalanced datasets and providing transparent, explainable AI decisions.
 
 ---
+
 ## 🚀 Live Demo
 Access the live web application here: https://dimas-scoring-engine.streamlit.app/
+
+
 ---
 
 ## Project Objectives
