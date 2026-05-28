@@ -6,3 +6,4 @@ xgboost
 shap
 imbalanced-learn
 matplotlib
+seaborn
