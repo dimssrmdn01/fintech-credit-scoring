@@ -5,7 +5,7 @@ import pickle
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-# Pengaturan dasar halaman dashboard credit scoring
+#Pengaturan dasar halaman dashboard credit scoring
 st.set_page_config(page_title="Fintech Credit Risk Engine", layout="wide")
 
 st.title("Fintech Credit Risk Assessment & Credit Scoring Engine")
@@ -16,25 +16,24 @@ st.markdown("---")
 # SIMULASI MODEL DATA (CALIBRATED)
 # -------------------------------------------------------------------
 def predict_credit_risk(features):
-    # Formulasi skoring logistik industri fintech yang sudah dikalibrasi
-    # Base risk dimulai dari intercept negatif agar probabilitas default dasar rendah
+   
     base_score = -1.5 
     
-    # Faktor yang menaikkan risiko (Positif)
+    #Faktor yang menaikkan risiko (Positif)
     risk_from_dti = (features['Debt_to_Income'] / 100) * 2.5
     risk_from_arrears = features['Historical_Arrears'] * 2.0
     risk_from_utilization = (features['Utilization_Rate'] / 100) * 1.5
     
-    # Faktor yang menurunkan risiko (Negatif)
+    #Faktor yang menurunkan risiko (Negatif)
     benefit_from_income = (features['Annual_Income'] / 100000) * 1.2
     
-    # Total Score Linear Logit
+    #Total Score Linear Logit
     total_logit = base_score + risk_from_dti + risk_from_arrears + risk_from_utilization - benefit_from_income
     
-    # Fungsi Aktivasi Sigmoid untuk mengubah logit menjadi Probabilitas (0 hingga 1)
+    #Fungsi Aktivasi Sigmoid untuk mengubah logit menjadi Probabilitas (0 hingga 1)
     prob = 1 / (1 + np.exp(-total_logit))
     
-    # Threshold persetujuan ketat manajemen risiko bank: 35%
+    #Threshold persetujuan ketat manajemen risiko bank: 35%
     prediction = 1 if prob > 0.35 else 0 
     return prob, prediction
 
@@ -50,7 +49,7 @@ dti = st.sidebar.slider("Debt-to-Income (DTI) Ratio (%)", min_value=0.0, max_val
 arrears = st.sidebar.number_input("Historical Arrears / Late Payments (Count)", min_value=0, max_value=10, value=0, step=1)
 utilization = st.sidebar.slider("Credit Card Utilization Rate (%)", min_value=0.0, max_value=100.0, value=35.0, step=1.0)
 
-# Masukkan ke dictionary features
+#Masukkan ke dictionary features
 input_features = {
     'Annual_Income': income,
     'Debt_to_Income': dti,
@@ -58,7 +57,7 @@ input_features = {
     'Utilization_Rate': utilization
 }
 
-# Run Engine Prediksi
+#Run Engine Prediksi
 prob_default, final_decision = predict_credit_risk(input_features)
 
 # -------------------------------------------------------------------
@@ -69,13 +68,13 @@ c1, c2 = st.columns(2)
 with c1:
     st.subheader("Credit Evaluation Summary")
     
-    # Kartu Keputusan Utama (UI Manarik & Tegas)
+    #Kartu Keputusan Utama 
     if final_decision == 0:
         st.success(f"APPLICATION APPROVED: Applicant '{applicant_name}' meets the credit safety threshold parameters.")
     else:
         st.error(f"APPLICATION REJECTED: High risk profile detected. Applicant '{applicant_name}' breaches risk parameters.")
         
-    # Tampilan Metrik Probabilitas
+    #Tampilan Metrik Probabilitas
     st.markdown("<br>", unsafe_allow_html=True)
     st.metric(
         label="Probability of Default (PD)", 
@@ -87,13 +86,12 @@ with c2:
     st.subheader("Explainable AI (XAI) Feature Importance Matrix")
     st.markdown("Analisis kontribusi fitur (Representasi visual dari SHAP TreeExplainer):")
     
-    # Visualisasi Kontribusi Fitur Menggunakan Horizontal Bar Chart (Mirip SHAP Summary)
-    # Menghitung dampak kontribusi fiktif berdasarkan parameter input untuk visualisasi
+    
     shap_values = [
-        -(income / 100000),      # Pendapatan tinggi menekan risiko (Negatif)
-        (dti * 0.05),            # DTI tinggi menaikkan risiko (Positif)
-        (arrears * 1.5),         # Tunggakan sangat mendongkrak risiko (Positif)
-        (utilization * 0.02)     # Utilitas kartu menaikkan risiko (Positif)
+        -(income / 100000),      
+        (dti * 0.05),            
+        (arrears * 1.5),         
+        (utilization * 0.02)     
     ]
     features_list = ['Annual Income Impact', 'DTI Ratio Impact', 'Historical Arrears Impact', 'Credit Utilization Impact']
     
