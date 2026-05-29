@@ -20,7 +20,7 @@ def train_and_explain():
     feature_names = data['feature_names']
     
     print("Melatih model XGBoost dengan data hasil SMOTE...")
-    # Menggunakan parameter dasar yang umumnya bagus untuk dataset kecil-menengah
+    
     model = XGBClassifier(
         n_estimators=100,
         max_depth=4,
@@ -34,40 +34,39 @@ def train_and_explain():
     y_pred = model.predict(X_test)
     y_prob = model.predict_proba(X_test)[:, 1]
     
-    # 1. Classification Report & ROC-AUC
-    # Di perbankan, kita lebih peduli pada Recall kelas 1 (seberapa pintar model menangkap nasabah macet)
+    #1. Classification Report & ROC-AUC
     print("Classification Report:")
     print(classification_report(y_test, y_pred))
     
     auc_score = roc_auc_score(y_test, y_prob)
     print(f"ROC-AUC Score: {auc_score:.4f}")
     
-    # Simpan model
+    #Simpan model
     os.makedirs("models", exist_ok=True)
     model_path = "models/xgboost_credit_model.pkl"
     with open(model_path, 'wb') as f:
         pickle.dump(model, f)
     print(f"\nModel berhasil disimpan di: {model_path}")
     
-    # 2. EXPLAINABLE AI (SHAP)
+    #2. EXPLAINABLE AI (SHAP)
     print("\nMenghasilkan visualisasi SHAP (Explainable AI)...")
     # SHAP Explainer khusus untuk model Tree-based seperti XGBoost
     explainer = shap.TreeExplainer(model)
     
-    # Menghitung SHAP values pada sebagian data test agar komputasi tidak terlalu lama
+    #Menghitung SHAP values pada sebagian data test 
     shap_values = explainer.shap_values(X_test)
     
-    # Membuat visualisasi SHAP Summary Plot
+    #Membuat visualisasi SHAP Summary Plot
     plt.figure(figsize=(10, 6))
     shap.summary_plot(shap_values, features=X_test, feature_names=feature_names, show=False)
     
-    # Simpan gambar grafik
+    #Simpan gambar grafik
     img_path = "docs/images/shap_summary.png"
     plt.savefig(img_path, dpi=300, bbox_inches='tight')
     print(f"Grafik SHAP berhasil disimpan di: {img_path}")
     plt.close()
     
-    print("\n🎉 PROSES TRAINING DAN EVALUASI SELESAI!")
+    print("\n PROSES TRAINING DAN EVALUASI SELESAI!")
 
 if __name__ == "__main__":
     train_and_explain()

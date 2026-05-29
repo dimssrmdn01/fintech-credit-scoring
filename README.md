@@ -9,6 +9,12 @@ An end-to-end Machine Learning pipeline designed to assess credit risk and predi
 
 ---
 
+## 🚀 Live Demo
+Access the live web application here: https://dimas-scoring-engine.streamlit.app/
+
+
+---
+
 ## Project Objectives
 In the financial sector, a "black-box" model is unacceptable. This project focuses on two critical aspects of credit scoring:
 1.  **Imbalanced Data Handling:** Using SMOTE (Synthetic Minority Over-sampling Technique) to prevent the model from blindly predicting the majority class (non-default).

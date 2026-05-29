@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import plotly.graph_objects as go
 
-# Pengaturan dasar halaman dashboard credit scoring
+#Pengaturan dasar halaman dashboard credit scoring
 st.set_page_config(page_title="Fintech Credit Risk Engine", layout="wide")
 
 st.title("Fintech Credit Risk Assessment & Credit Scoring Engine")
@@ -16,10 +16,7 @@ st.markdown("---")
 # -------------------------------------------------------------------
 # SIMULASI MODEL DATA (MOCK PREDICTION ENGINE)
 # -------------------------------------------------------------------
-# Catatan: Ini adalah fungsi simulator pengambil keputusan berbasis bobot logloss 
-# yang meniru perilaku model XGBoost + SMOTE yang telah dilatih.
 def predict_credit_risk(features):
-    # Logika skoring kuantitatif berdasarkan bobot risiko industri fintech
     score = (
         (features['Debt_to_Income'] * 0.4) +
         (features['Historical_Arrears'] * 25.0) +
@@ -27,9 +24,9 @@ def predict_credit_risk(features):
         (features['Annual_Income'] / 50000)
     )
     
-    # Normalisasi ke probabilitas gagal bayar (Default Probability)
+    #Normalisasi ke probabilitas gagal bayar (Default Probability)
     prob = 1 / (1 + np.exp(-(-2.5 + score/10)))
-    prediction = 1 if prob > 0.45 else 0 # Threshold ketat untuk manajemen risiko bank
+    prediction = 1 if prob > 0.45 else 0 
     return prob, prediction
 
 # -------------------------------------------------------------------
@@ -44,7 +41,7 @@ dti = st.sidebar.slider("Debt-to-Income (DTI) Ratio (%)", min_value=0.0, max_val
 arrears = st.sidebar.number_input("Historical Arrears / Late Payments (Count)", min_value=0, max_value=10, value=0, step=1)
 utilization = st.sidebar.slider("Credit Card Utilization Rate (%)", min_value=0.0, max_value=100.0, value=35.0, step=1.0)
 
-# Masukkan ke dictionary features
+#Masukkan ke dictionary features
 input_features = {
     'Annual_Income': income,
     'Debt_to_Income': dti,
@@ -52,7 +49,7 @@ input_features = {
     'Utilization_Rate': utilization
 }
 
-# Run Engine Prediksi
+#Run Engine Prediksi
 prob_default, final_decision = predict_credit_risk(input_features)
 
 # -------------------------------------------------------------------
@@ -63,6 +60,7 @@ c1, c2 = st.columns(2)
 with c1:
     st.subheader("Credit Evaluation Summary")
     
+<<<<<<< HEAD
     # 1. Ubah probabilitas desimal jadi persentase (misal 0.82 -> 82%)
     risk_percentage = prob_default * 100
     
@@ -93,22 +91,36 @@ with c1:
     st.plotly_chart(fig_gauge, use_container_width=True)
     
     # 3. Kartu Keputusan Utama (UI Menarik & Tegas)
+=======
+    #Kartu Keputusan Utama
+>>>>>>> 86a1c483584dc29aa16597ade82f013f83cb61e7
     if final_decision == 0:
         st.success(f"✅ APPLICATION APPROVED: Applicant '{applicant_name}' meets the credit safety threshold parameters.")
     else:
+<<<<<<< HEAD
         st.error(f"❌ APPLICATION REJECTED: High risk profile detected. Applicant '{applicant_name}' breaches risk parameters.")
+=======
+        st.error(f"APPLICATION REJECTED: High risk profile detected. Applicant '{applicant_name}' breaches risk parameters.")
+        
+    #Tampilan Metrik Probabilitas
+    st.markdown("<br>", unsafe_allow_html=True)
+    st.metric(
+        label="Probability of Default (PD)", 
+        value=f"{prob_default * 100:.2f}%", 
+        delta=f"{'HIGH RISK PROFILE' if prob_default > 0.45 else 'LOW RISK PROFILE'}"
+    )
+>>>>>>> 86a1c483584dc29aa16597ade82f013f83cb61e7
 
 with c2:
     st.subheader("Explainable AI (XAI) Feature Importance Matrix")
     st.markdown("Analisis kontribusi fitur (Representasi visual dari SHAP TreeExplainer):")
     
-    # Visualisasi Kontribusi Fitur Menggunakan Horizontal Bar Chart (Mirip SHAP Summary)
-    # Menghitung dampak kontribusi fiktif berdasarkan parameter input untuk visualisasi
+    
     shap_values = [
-        -(income / 100000),      # Pendapatan tinggi menekan risiko (Negatif)
-        (dti * 0.05),            # DTI tinggi menaikkan risiko (Positif)
-        (arrears * 1.5),         # Tunggakan sangat mendongkrak risiko (Positif)
-        (utilization * 0.02)     # Utilitas kartu menaikkan risiko (Positif)
+        -(income / 100000),      
+        (dti * 0.05),            
+        (arrears * 1.5),         
+        (utilization * 0.02)     
     ]
     features_list = ['Annual Income Impact', 'DTI Ratio Impact', 'Historical Arrears Impact', 'Credit Utilization Impact']
     
@@ -127,7 +139,7 @@ with c2:
     ax.tick_params(colors='white', labelsize=9)
     ax.set_title("Local Explanation: Risk Drivers for Current Applicant", color='white', fontsize=11, fontweight='bold')
     
-    # Bersihkan border grafik
+    #Bersihkan border grafik
     for spine in ax.spines.values():
         spine.set_visible(False)
         
