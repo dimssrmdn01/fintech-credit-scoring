@@ -4,6 +4,7 @@ import numpy as np
 import pickle
 import matplotlib.pyplot as plt
 import seaborn as sns
+import plotly.graph_objects as go
 
 # Pengaturan dasar halaman dashboard credit scoring
 st.set_page_config(page_title="Fintech Credit Risk Engine", layout="wide")
@@ -62,19 +63,40 @@ c1, c2 = st.columns(2)
 with c1:
     st.subheader("Credit Evaluation Summary")
     
-    # Kartu Keputusan Utama (UI Manarik & Tegas)
+    # 1. Ubah probabilitas desimal jadi persentase (misal 0.82 -> 82%)
+    risk_percentage = prob_default * 100
+    
+    # 2. Visualisasi Speedometer (Gauge Chart) Plotly
+    fig_gauge = go.Figure(go.Indicator(
+        mode = "gauge+number",
+        value = risk_percentage,
+        domain = {'x': [0, 1], 'y': [0, 1]},
+        title = {'text': "Probability of Default (Risiko Gagal Bayar)", 'font': {'size': 18}},
+        number = {'suffix': "%"},
+        gauge = {
+            'axis': {'range': [None, 100]},
+            'bar': {'color': "darkblue"},
+            'steps': [
+                {'range': [0, 35], 'color': "lightgreen"},  # Zona Aman (sesuai threshold 0.35 milikmu)
+                {'range': [35, 70], 'color': "gold"},       # Zona Waspada
+                {'range': [70, 100], 'color': "salmon"}     # Zona Berbahaya
+            ],
+            'threshold': {
+                'line': {'color': "red", 'width': 4},
+                'thickness': 0.75,
+                'value': risk_percentage
+            }
+        }
+    ))
+    
+    # Tampilkan grafik speedometer
+    st.plotly_chart(fig_gauge, use_container_width=True)
+    
+    # 3. Kartu Keputusan Utama (UI Menarik & Tegas)
     if final_decision == 0:
-        st.success(f"APPLICATION APPROVED: Applicant '{applicant_name}' meets the credit safety threshold parameters.")
+        st.success(f"✅ APPLICATION APPROVED: Applicant '{applicant_name}' meets the credit safety threshold parameters.")
     else:
-        st.error(f"APPLICATION REJECTED: High risk profile detected. Applicant '{applicant_name}' breaches risk parameters.")
-        
-    # Tampilan Metrik Probabilitas
-    st.markdown("<br>", unsafe_allow_html=True)
-    st.metric(
-        label="Probability of Default (PD)", 
-        value=f"{prob_default * 100:.2f}%", 
-        delta=f"{'HIGH RISK PROFILE' if prob_default > 0.45 else 'LOW RISK PROFILE'}"
-    )
+        st.error(f"❌ APPLICATION REJECTED: High risk profile detected. Applicant '{applicant_name}' breaches risk parameters.")
 
 with c2:
     st.subheader("Explainable AI (XAI) Feature Importance Matrix")
