@@ -60,7 +60,6 @@ c1, c2 = st.columns(2)
 with c1:
     st.subheader("Credit Evaluation Summary")
     
-<<<<<<< HEAD
     # 1. Ubah probabilitas desimal jadi persentase (misal 0.82 -> 82%)
     risk_percentage = prob_default * 100
     
@@ -91,25 +90,10 @@ with c1:
     st.plotly_chart(fig_gauge, use_container_width=True)
     
     # 3. Kartu Keputusan Utama (UI Menarik & Tegas)
-=======
-    #Kartu Keputusan Utama
->>>>>>> 86a1c483584dc29aa16597ade82f013f83cb61e7
     if final_decision == 0:
         st.success(f"✅ APPLICATION APPROVED: Applicant '{applicant_name}' meets the credit safety threshold parameters.")
     else:
-<<<<<<< HEAD
         st.error(f"❌ APPLICATION REJECTED: High risk profile detected. Applicant '{applicant_name}' breaches risk parameters.")
-=======
-        st.error(f"APPLICATION REJECTED: High risk profile detected. Applicant '{applicant_name}' breaches risk parameters.")
-        
-    #Tampilan Metrik Probabilitas
-    st.markdown("<br>", unsafe_allow_html=True)
-    st.metric(
-        label="Probability of Default (PD)", 
-        value=f"{prob_default * 100:.2f}%", 
-        delta=f"{'HIGH RISK PROFILE' if prob_default > 0.45 else 'LOW RISK PROFILE'}"
-    )
->>>>>>> 86a1c483584dc29aa16597ade82f013f83cb61e7
 
 with c2:
     st.subheader("Explainable AI (XAI) Feature Importance Matrix")
