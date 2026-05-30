@@ -60,10 +60,10 @@ c1, c2 = st.columns(2)
 with c1:
     st.subheader("Credit Evaluation Summary")
     
-    # 1. Ubah probabilitas desimal jadi persentase (misal 0.82 -> 82%)
+    # 1.Ubah probabilitas desimal jadi persentase
     risk_percentage = prob_default * 100
     
-    # 2. Visualisasi Speedometer (Gauge Chart) Plotly
+    # 2.Visualisasi Speedometer
     fig_gauge = go.Figure(go.Indicator(
         mode = "gauge+number",
         value = risk_percentage,
@@ -74,9 +74,9 @@ with c1:
             'axis': {'range': [None, 100]},
             'bar': {'color': "darkblue"},
             'steps': [
-                {'range': [0, 35], 'color': "lightgreen"},  # Zona Aman (sesuai threshold 0.35 milikmu)
-                {'range': [35, 70], 'color': "gold"},       # Zona Waspada
-                {'range': [70, 100], 'color': "salmon"}     # Zona Berbahaya
+                {'range': [0, 35], 'color': "lightgreen"},  
+                {'range': [35, 70], 'color': "gold"},       
+                {'range': [70, 100], 'color': "salmon"}     
             ],
             'threshold': {
                 'line': {'color': "red", 'width': 4},
@@ -86,10 +86,10 @@ with c1:
         }
     ))
     
-    # Tampilkan grafik speedometer
+    #Tampilkan grafik speedometer
     st.plotly_chart(fig_gauge, use_container_width=True)
     
-    # 3. Kartu Keputusan Utama (UI Menarik & Tegas)
+    #3. Kartu Keputusan Utama 
     if final_decision == 0:
         st.success(f"✅ APPLICATION APPROVED: Applicant '{applicant_name}' meets the credit safety threshold parameters.")
     else:
