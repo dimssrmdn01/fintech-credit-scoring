@@ -45,11 +45,11 @@ np.random.seed(42)
 n_sampel = 1000
 
 # Simulasi ketimpangan data: 90% Bayar Lancar (0), 10% Gagal Bayar/Default (1)
-lancar_income = np.random.normal(15, 3, 900)      # Pendapatan lebih tinggi
-default_income = np.random.normal(6, 2, 100)       # Pendapatan lebih rendah
+lancar_income = np.random.normal(15, 3, 900)      
+default_income = np.random.normal(6, 2, 100)       
 
-lancar_dti = np.random.normal(25, 5, 900)         # Debt-to-Income ratio rendah
-default_dti = np.random.normal(55, 12, 100)       # Debt-to-Income ratio tinggi
+lancar_dti = np.random.normal(25, 5, 900)         
+default_dti = np.random.normal(55, 12, 100)       
 
 df_lancar = pd.DataFrame({'Income_Juta': lancar_income, 'DTI_Ratio': lancar_dti, 'Default': 0})
 df_default = pd.DataFrame({'Income_Juta': default_income, 'DTI_Ratio': default_dti, 'Default': 1})
