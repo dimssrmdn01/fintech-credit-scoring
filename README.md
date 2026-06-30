@@ -35,7 +35,7 @@ fintech-credit-scoring/
 
 ---
 
-##  Core Methodologies & Architecture
+## Core Methodologies & Architecture
 
 1. **Imbalanced Learning Data Layer:** Implements `SMOTE` (Synthetic Minority Over-sampling Technique) to synthetically balance historical loan default occurrences, preventing model classification bias toward high-volume non-default profiles.
 2. **Gradient Boosting Resolution:** Trains an `XGBoost Classifier` fine-tuned to map non-linear financial interactions and optimized against strict recall boundaries to minimize credit default leakages.
@@ -44,7 +44,7 @@ fintech-credit-scoring/
 
 ---
 
-##  SQL Model Governance Schema
+## SQL Model Governance Schema
 
 Every operational iteration records governance vectors directly into the persistent storage engine:
 
@@ -58,7 +58,7 @@ Every operational iteration records governance vectors directly into the persist
 
 ---
 
-##  How to Run (Local Setup)
+## How to Run (Local Setup)
 
 1. **Clone the Repository:**
    ```bash
